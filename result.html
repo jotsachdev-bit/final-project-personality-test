@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Personality Result</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg,#6704d8, #2f0676,  #8844ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .result-box {
+      width: 90%;
+      max-width: 800px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 22px;
+      padding: 50px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 0 10px #8844ff;
+    }
+
+    .type {
+      font-size: 42px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 8px;
+     
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 18px;
+      opacity: 0.9;
+      margin-bottom: 40px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 18px;
+      padding: 25px;
+    box-shadow: 0 0 10px #7b2fb5;
+    }
+
+    .card h3 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      color: #f3c4ff;
+    }
+
+    .card ul {
+      padding-left: 18px;
+    }
+
+    .card ul li {
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+    
+    .card:hover{
+        transform: translateY(-10px);
+    }
+    .btn-box {
+      text-align: center;
+    }
+
+    .btn {
+      padding: 14px 36px;
+      border-radius: 30px;
+      border: none;
+      background: linear-gradient(135deg,#361c53, #7c25c4,  #8844ff);
+      color:white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #7b2fb5;
+    }
+
+    @media (max-width: 650px) {
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .result-box {
+        padding: 35px;
+      }
+    }
+    @keyframes animate{
+    0%{
+        transform: translateX(0px);
+        transform: translateY(0px);
+        scale: 0.5;
+    }
+    50%{
+        transform: translateX(300px);
+        scale: 1;
+    }
+    75%{
+        transform: translateY(100px);
+        scale: 1.5;
+    }
+    100%{
+        transform: translateZ(300px);
+        scale: 1;
+    }
+
+}
+.box{
+    height: 100px;
+    width: 100px;
+    z-index: -1;
+    background-color: white;
+    border-radius: 50%;
+    animation: animate;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    opacity: 0.25;
+}
+  </style>
+</head>
+
+<body>
+ <div class="box"></div>
+  <div class="result-box">
+    <div class="type" id="typeText">---</div>
+    <div class="subtitle" id="typeTitle">Your Personality Type</div>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Strengths</h3>
+        <ul id="strengthsList"></ul>
+      </div>
+ 
+      <div class="card">
+        <h3>Weaknesses</h3>
+        <ul id="weaknessesList"></ul>
+      </div>
+    </div>
+
+    <div class="btn-box">
+      <a href="index.html#howtostart"><button class="btn">Retake Test</button></a>
+    </div>
+  </div>
+  <script>
+    // FETCH RESULT FROM TEST PAGE
+    const personalityType = localStorage.getItem("personalityType");
+
+    // SAFETY CHECK
+    if (!personalityType) {
+      window.location.href = "test.html";
+    }
+
+    const personalityData = {
+      INTROVERT: {
+        title: "The Quiet Thinker",
+        strengths: [
+          "Deep focus",
+          "Self-aware",
+          "Good listener",
+          "Independent mindset"
+        ],
+        weaknesses: [
+          "Overthinking",
+          "Social fatigue",
+          "Reserved expression"
+        ]
+      },
+      EXTROVERT: {
+        title: "The Social Energizer",
+        strengths: [
+          "Outgoing",
+          "Confident",
+          "Expressive",
+          "High energy"
+        ],
+        weaknesses: [
+          "Impulsive",
+          "Needs stimulation",
+          "Easily distracted"
+        ]
+      },
+      AMBIVERT: {
+        title: "The Balanced Mind",
+        strengths: [
+          "Adaptable",
+          "Emotionally intelligent",
+          "Situational awareness",
+          "Flexible communication"
+        ],
+        weaknesses: [
+          "Mood dependent",
+          "Indecisive at times",
+          "Energy fluctuation"
+        ]
+      }
+    };
+
+    const data = personalityData[personalityType];
+
+    // DISPLAY RESULT
+    document.getElementById("typeText").innerText = personalityType;
+    document.getElementById("typeTitle").innerText = data.title;
+
+    const strengthsList = document.getElementById("strengthsList");
+    const weaknessesList = document.getElementById("weaknessesList");
+
+    data.strengths.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      strengthsList.appendChild(li);
+    });
+
+    data.weaknesses.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      weaknessesList.appendChild(li);
+    });
+
+    function retakeTest() {
+      localStorage.removeItem("personalityType");
+      window.location.href = "test.html";
+    }
+  </script>
+</body>
+</html>
